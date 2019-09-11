@@ -96,7 +96,7 @@ class DirMonitor():
             mtime = os.stat(path).st_mtime
             if path not in self._times:
                 self._times[path] = mtime
-                return False
+                return True
             elif mtime != self._times[path]:
                 self._times[path] = mtime
                 return True
