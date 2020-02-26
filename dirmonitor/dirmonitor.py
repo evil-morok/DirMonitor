@@ -36,7 +36,7 @@ class DirMonitor():
             # Check modification times on all files under local_dir.
             while not queue.empty():
                 dir_path = queue.get()
-                for item in os.listdir(dir_path):
+                for item in sorted(os.listdir(dir_path)):
                     item_path = os.path.join(dir_path, item)
                     if not self._ignored(item_path):
                         if os.path.isdir(item_path):
