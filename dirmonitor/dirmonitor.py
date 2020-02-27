@@ -25,12 +25,12 @@ class DirMonitor():
         self.working_thread = threading.Thread(target=self._monitor)
         self.working_thread.setDaemon(True)
         self._threads.append(self.working_thread)
-
+        self._working = True
         atexit.register(self._exiting)
 
     def _monitor(self):
         self._update_ignore()
-        while True:
+        while self._working:
             queue = Queue()
             queue.put(self.target_dir)
             # Check modification times on all files under local_dir.
@@ -70,6 +70,9 @@ class DirMonitor():
                         self.ignore_pattern.append(line[:-1])
         self.ignore_pattern.append(".git/")
 
+    def stop(self):
+        self._working = False
+        
     def start(self, interval=1.0):
         if interval < self._interval:
             self._interval = interval
